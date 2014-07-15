@@ -31,14 +31,15 @@ public class MyView extends View {
     private float targety=430; //目标Y距离
     private double sping=0.01; //弹动系数
     private double sping1=0.4;
-    private double friction=0.95; //摩擦力系数
+//    private double friction=0.05; //摩擦力系数
+    private double friction=0.95; //摩擦力系数 原始
     private float springLength=100;//弹簧的长度
     private RectF rt=null;
     private float margin=10;
     private int flag=0;
     private float downX;
     private float upX;
-
+private int saveCount;
     public MyView(Context context) {
 
         super(context);
@@ -113,14 +114,14 @@ public class MyView extends View {
             //canvas.restoreToCount(1);
 
             RectF rt0 = new RectF(0,rt.height()-chartRect.getHeight(),chartRect.getWidth(),rt.height());
-            canvas.save(111);
+            saveCount=canvas.save();
             canvas.translate(chartRect.getX(),0);
 
             //canvas.drawOval(rt0, paint);
             canvas.drawRect(rt0,paint);
             int num =(int)chartRect.getWidth()/100;
 
-            canvas.restoreToCount(111);
+            canvas.restoreToCount(saveCount);
             canvas.drawLine(rt.left, rt.height() - (chartRect.getHeight() / 2), chartRect.getX(), rt.height() - (chartRect.getHeight() / 2), paint);
             canvas.drawLine(rt.right, rt.height() - (chartRect.getHeight() / 2), chartRect.getX()+chartRect.getWidth() , rt.height() - (chartRect.getHeight() / 2), paint);//左弹簧线
             canvas.drawLine(targetleft,400-40-20,targetleft,400,paint); //左弹簧固定点

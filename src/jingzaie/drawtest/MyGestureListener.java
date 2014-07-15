@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
  * Created by jingzaie on 14-7-9.
  */
 public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-    private MyView myView;
+	private MyView myView;
 
     public int flagStop = 0;
     public ChartRect chartRect = new ChartRect();
