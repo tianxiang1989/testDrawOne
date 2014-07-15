@@ -39,7 +39,7 @@ public class MyView extends View {
     private int flag=0;
     private float downX;
     private float upX;
-private int saveCount;
+	private int saveCount;
     public MyView(Context context) {
 
         super(context);
@@ -114,13 +114,16 @@ private int saveCount;
             //canvas.restoreToCount(1);
 
             RectF rt0 = new RectF(0,rt.height()-chartRect.getHeight(),chartRect.getWidth(),rt.height());
-            saveCount=canvas.save();
+//            saveCount=canvas.save();
+            saveCount= canvas.save(1);
+            
             canvas.translate(chartRect.getX(),0);
 
             //canvas.drawOval(rt0, paint);
             canvas.drawRect(rt0,paint);
             int num =(int)chartRect.getWidth()/100;
 
+//            canvas.restoreToCount(saveCount);
             canvas.restoreToCount(saveCount);
             canvas.drawLine(rt.left, rt.height() - (chartRect.getHeight() / 2), chartRect.getX(), rt.height() - (chartRect.getHeight() / 2), paint);
             canvas.drawLine(rt.right, rt.height() - (chartRect.getHeight() / 2), chartRect.getX()+chartRect.getWidth() , rt.height() - (chartRect.getHeight() / 2), paint);//左弹簧线
