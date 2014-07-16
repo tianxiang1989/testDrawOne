@@ -13,8 +13,7 @@ import android.view.View;
 /**
  * Created by jingzaie on 14-6-25.
  */
-@SuppressLint("NewApi")
-public class MyView extends View {
+public class MyView extends View { 
     private Paint paint = new Paint();
     public float startX=0,startY=0;
     public int flagStop=0;
