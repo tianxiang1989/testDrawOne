@@ -1,6 +1,5 @@
 package jingzaie.drawtest;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,24 +19,16 @@ public class MyView extends View {
     public ChartRect chartRect =new ChartRect();
     public GestureDetector   mGestureDetector;
     private float vx=0;
-    private float vy=1;
     private float dx=0;
     private float ax=0;
-    private float dy=0;
-    private float ay=0;
     public float targetleft=430; //目标x轴左距离
     public float targetright;//目标x轴右距离
-    private float targety=430; //目标Y距离
     private double sping=0.01; //弹动系数
-    private double sping1=0.4;
-//    private double friction=0.05; //摩擦力系数
     private double friction=0.95; //摩擦力系数 原始
     private float springLength=100;//弹簧的长度
     private RectF rt=null;
     private float margin=10;
-    private int flag=0;
-    private float downX;
-    private float upX;
+    private int flag=0; //是否可以滑动的标识
 	private int saveCount;
     public MyView(Context context) {
 
