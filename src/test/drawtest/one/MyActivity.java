@@ -10,7 +10,7 @@ import android.widget.Button;
  * 2014年7月15日
  */
 public class MyActivity extends Activity {
-	//自定义MyView
+	//自定义的视图类
 	private MyView mv;
 
 	@Override
@@ -22,7 +22,7 @@ public class MyActivity extends Activity {
 		Btn1.setOnClickListener(new Button.OnClickListener() {// 创建监听
 			public void onClick(View v) {
 				// 设置不可滚动
-//				mv.flagStop = 1;
+				mv.flagStop = 1;
 			}
 		});
 	}

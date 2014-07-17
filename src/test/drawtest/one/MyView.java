@@ -16,7 +16,7 @@ import android.view.View;
 public class MyView extends View {
 	private Paint paint = new Paint();
 	/**是否可以拖动的标识：0可以;1不可以*/
-	private int flagStop = 0;
+	public int flagStop = 0;
 	/**需要拖动的Rect*/
 	public ChartRect chartRect = new ChartRect();
 	/**手势识别类*/
@@ -69,7 +69,7 @@ public class MyView extends View {
 	@Override
 	protected void onDraw(android.graphics.Canvas canvas) {
 		super.onDraw(canvas);
-		if (isFirst) { // 初始化
+		if (isFirst) { // 初始化参数
 			// 弹簧位置
 			leftSpringLocation = margin + springLength;
 			rightSpringLocation = getWidth() - margin - springLength;
@@ -83,6 +83,7 @@ public class MyView extends View {
 					new MyGestureListener(this));
 			isFirst = false;
 		}
+		/*开始画图*/
 		// 画外边框
 		outsideRect = new RectF(margin, margin, getWidth() - margin, 400);
 		canvas.drawRect(outsideRect, paint);
@@ -103,7 +104,7 @@ public class MyView extends View {
 				outsideRect.height() - (chartRect.getHeight() / 2),
 				chartRect.getLeft() + chartRect.getWidth(),
 				outsideRect.height() - (chartRect.getHeight() / 2), paint);
-		int a = canvas.save();
+		int cur = canvas.save();
 		canvas.translate(chartRect.getLeft(), 0);
 
 		// 画需要拖动的RectF外边缘
@@ -117,7 +118,7 @@ public class MyView extends View {
 			canvas.drawLine(x, 400 - chartRect.getHeight() - 10, x, 400 - 10,
 					paint);
 		}
-		canvas.restoreToCount(a);
+		canvas.restoreToCount(cur);
 	}
 
 	@Override
