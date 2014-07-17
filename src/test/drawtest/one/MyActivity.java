@@ -18,11 +18,18 @@ public class MyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my);
 		mv = (MyView) findViewById(R.id.view);
-		Button Btn1 = (Button) findViewById(R.id.button);// 获取按钮资源
+		Button Btn1 = (Button) findViewById(R.id.buttonStop);// 获取按钮资源
 		Btn1.setOnClickListener(new Button.OnClickListener() {// 创建监听
 			public void onClick(View v) {
 				// 设置不可滚动
 				mv.flagStop = 1;
+			}
+		});
+		Button Btn2 = (Button) findViewById(R.id.buttonStart);// 获取按钮资源
+		Btn2.setOnClickListener(new Button.OnClickListener() {// 创建监听
+			public void onClick(View v) {
+				// 设置不可滚动
+				mv.flagStop = 0;
 			}
 		});
 	}

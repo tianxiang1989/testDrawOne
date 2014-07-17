@@ -183,7 +183,9 @@ public class MyView extends View {
 
 		@Override
 		public void run() {
-
+			if (flagStop == 1) {
+				return;
+			}
 			if (rollingTurn == 0) {// 向左弹回
 				toLeft();
 			} else if (rollingTurn == 1) {// 向右弹回
