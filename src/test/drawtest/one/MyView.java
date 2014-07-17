@@ -19,6 +19,7 @@ public class MyView extends View {
 	private int flagStop = 0;
 	/**需要拖动的Rect*/
 	public ChartRect chartRect = new ChartRect();
+	/**手势识别类*/
 	private GestureDetector mGestureDetector;
 	/**左侧弹簧固定板位置*/
 	public float leftSpringLocation;
@@ -63,96 +64,60 @@ public class MyView extends View {
 		paint.setAntiAlias(true); // 去锯齿 (画圆的时候可以看出来了效果)
 		paint.setStrokeWidth(4); // 设置线宽
 
-		// 设置拖动图像的宽高
-		chartRect.setHeight(40);
-		chartRect.setWidth(1200);
 	}
-
-	RectF rt0;
 
 	@Override
 	protected void onDraw(android.graphics.Canvas canvas) {
 		super.onDraw(canvas);
-
-		// 判断是否是第一次进入
-		if (isFirst) {// 第一次进入
-			// 画外边框
-			outsideRect = new RectF(margin, margin, getWidth() - margin, 400);
-			canvas.drawRect(outsideRect, paint);
-			// 设置需要拖动的Rect的左/右边缘位置
-			chartRect.setLeft(outsideRect.left + springLength);
-			chartRect.setRight(chartRect.getLeft() + chartRect.getWidth());
-			// 画需要拖动的RectF外边缘
-			RectF rt0 = new RectF(chartRect.getLeft(), outsideRect.height()
-					- chartRect.getHeight(), chartRect.getRight(),
-					outsideRect.height());
-			canvas.drawRect(rt0, paint);
-			// 设置左右弹簧位置
-			leftSpringLocation = rt0.left;
+		if (isFirst) { // 初始化
+			// 弹簧位置
+			leftSpringLocation = margin + springLength;
 			rightSpringLocation = getWidth() - margin - springLength;
-			// 画可拖动视图的竖分割线
-			int num = (int) chartRect.getWidth() / 100;
-			for (int i = 1; i < num; i++) {
-				float x = chartRect.getLeft() + i * 100;
-				canvas.drawLine(x, 400 - chartRect.getHeight() - 10, x,
-						400 - 10, paint);
-			}
-			// 左弹簧固定点
-			canvas.drawLine(leftSpringLocation,
-					400 - chartRect.getHeight() - 20, leftSpringLocation, 400,
-					paint);
-			// 右弹簧固定点
-			canvas.drawLine(rightSpringLocation,
-					400 - chartRect.getHeight() - 20, rightSpringLocation, 400,
-					paint);
-			// 左弹簧线
-			canvas.drawLine(outsideRect.left,
-					outsideRect.height() - (chartRect.getHeight() / 2),
-					leftSpringLocation,
-					outsideRect.height() - (chartRect.getHeight() / 2), paint);
-			// 右弹簧线
-			canvas.drawLine(outsideRect.right, outsideRect.height()
-					- (chartRect.getHeight() / 2), chartRect.getRight(),
-					outsideRect.height() - (chartRect.getHeight() / 2), paint);
+			// 设置拖动图像的宽高
+			chartRect.setHeight(40);
+			chartRect.setWidth(1200);
+			// 设置拖动图像的左右边距
+			chartRect.setLeft(margin + springLength);
+			chartRect.setRight(chartRect.getLeft() + chartRect.getWidth());
 			mGestureDetector = new GestureDetector(getContext(),
 					new MyGestureListener(this));
-			// 标识已初始化
 			isFirst = false;
-		} else {
-			// 画外边框
-			canvas.drawRect(outsideRect, paint);
-			// 画需要拖动的RectF外边缘
-			RectF rt0 = new RectF(chartRect.getLeft(), outsideRect.height()
-					- chartRect.getHeight(), chartRect.getRight(),
-					outsideRect.height());
-			canvas.drawRect(rt0, paint);
-			// 左弹簧固定点
-			canvas.drawLine(leftSpringLocation,
-					400 - chartRect.getHeight() - 20, leftSpringLocation, 400,
-					paint);
-			// 右弹簧固定点
-			canvas.drawLine(rightSpringLocation,
-					400 - chartRect.getHeight() - 20, rightSpringLocation, 400,
-					paint);
-			// 左弹簧线
-			canvas.drawLine(outsideRect.left,
-					outsideRect.height() - (chartRect.getHeight() / 2),
-					chartRect.getLeft(),
-					outsideRect.height() - (chartRect.getHeight() / 2), paint);
-			// 右弹簧线
-			canvas.drawLine(outsideRect.right, outsideRect.height()
-					- (chartRect.getHeight() / 2), chartRect.getLeft()
-					+ chartRect.getWidth(),
-					outsideRect.height() - (chartRect.getHeight() / 2), paint);
-			// 画可拖动视图的竖分割线
-			int num = (int) chartRect.getWidth() / 100;
-			for (int i = 1; i < num; i++) {
-				float x = chartRect.getLeft() + i * 100;
-				canvas.drawLine(x, 400 - chartRect.getHeight() - 10, x,
-						400 - 10, paint);
-			}
-
 		}
+		// 画外边框
+		outsideRect = new RectF(margin, margin, getWidth() - margin, 400);
+		canvas.drawRect(outsideRect, paint);
+
+		// 左弹簧固定点
+		canvas.drawLine(leftSpringLocation, 400 - chartRect.getHeight() - 20,
+				leftSpringLocation, 400, paint);
+		// 右弹簧固定点
+		canvas.drawLine(rightSpringLocation, 400 - chartRect.getHeight() - 20,
+				rightSpringLocation, 400, paint);
+		// 左弹簧线
+		canvas.drawLine(outsideRect.left,
+				outsideRect.height() - (chartRect.getHeight() / 2),
+				chartRect.getLeft(),
+				outsideRect.height() - (chartRect.getHeight() / 2), paint);
+		// 右弹簧线
+		canvas.drawLine(outsideRect.right,
+				outsideRect.height() - (chartRect.getHeight() / 2),
+				chartRect.getLeft() + chartRect.getWidth(),
+				outsideRect.height() - (chartRect.getHeight() / 2), paint);
+		int a = canvas.save();
+		canvas.translate(chartRect.getLeft(), 0);
+
+		// 画需要拖动的RectF外边缘
+		RectF rt0 = new RectF(0, outsideRect.height() - chartRect.getHeight(),
+				chartRect.getWidth(), outsideRect.height());
+		canvas.drawRect(rt0, paint);
+		// 画可拖动视图的竖分割线
+		int num = (int) chartRect.getWidth() / 100;
+		for (int i = 1; i < num; i++) {
+			float x = i * 100;
+			canvas.drawLine(x, 400 - chartRect.getHeight() - 10, x, 400 - 10,
+					paint);
+		}
+		canvas.restoreToCount(a);
 	}
 
 	@Override
@@ -175,10 +140,9 @@ public class MyView extends View {
 				DrawThread dr = new DrawThread(1, 0); // 向右弹回
 				dr.start();
 			} else {
-				// 否则不进行弹簧回滚
+				// 否则不进行弹簧回滚，进行弹簧的滑动
 				return mGestureDetector.onTouchEvent(event);
 			}
-			// return mGestureDetector.onTouchEvent(event);
 			break;
 		default:
 			break;
@@ -197,6 +161,7 @@ public class MyView extends View {
 		private float dx;
 		/**加速度*/
 		private float ax = 0;
+
 		/**
 		 * 构造方法
 		 * @param flag 标识：0是向左弹回;1向右弹回;2fling用的弹回;3onScroll用的弹回
@@ -246,14 +211,8 @@ public class MyView extends View {
 				} else if ((chartRect.getLeft() + chartRect.getWidth()) < rightSpringLocation) {
 					toRight();
 				}
-			} else if (rollingTurn == 4) {// onScroll中用的
-				if (chartRect.getLeft() > leftSpringLocation
-						|| chartRect.getRight() < rightSpringLocation) {
-					chartRect.setLeft(chartRect.getLeft() + (-1 * vx)
-							* (float) sping);
-				} else {
-					chartRect.setLeft(chartRect.getLeft() + (-1 * vx));
-				}
+			} else if (rollingTurn == 4) {// onScroll中用的 0.5[自定义的一个阻力]
+				chartRect.setLeft(chartRect.getLeft() + (-1 * vx) * (float) 0.5);
 				chartRect.setRight(chartRect.getLeft() + chartRect.getWidth());
 				MyView.this.postInvalidate();
 			}

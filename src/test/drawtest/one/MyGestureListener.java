@@ -19,6 +19,7 @@ public class MyGestureListener extends SimpleOnGestureListener {
 		return true;
 	}
 
+	//匀速滑动
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
@@ -27,6 +28,7 @@ public class MyGestureListener extends SimpleOnGestureListener {
 		return true;
 	}
 
+	//手离开的加速滑动
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
