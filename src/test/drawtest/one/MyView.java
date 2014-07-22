@@ -15,8 +15,8 @@ import android.view.View;
  */
 public class MyView extends View {
 	private Paint paint = new Paint();
-	/**是否可以拖动的标识：0可以;1不可以*/
-	public int flagStop = 0;
+	/**是否可以拖动的标识：true可以;false不可以*/
+	public boolean canMove = true;
 	/**需要拖动的Rect*/
 	public ChartRect chartRect = new ChartRect();
 	/**手势识别类*/
@@ -104,7 +104,7 @@ public class MyView extends View {
 				outsideRect.height() - (chartRect.getHeight() / 2),
 				chartRect.getLeft() + chartRect.getWidth(),
 				outsideRect.height() - (chartRect.getHeight() / 2), paint);
-		int cur = canvas.save();
+		int cur = canvas.save(); //保存状态
 		canvas.translate(chartRect.getLeft(), 0);
 
 		// 画需要拖动的RectF外边缘
@@ -118,7 +118,7 @@ public class MyView extends View {
 			canvas.drawLine(x, 400 - chartRect.getHeight() - 10, x, 400 - 10,
 					paint);
 		}
-		canvas.restoreToCount(cur);
+		canvas.restoreToCount(cur); //还原状态
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class MyView extends View {
 
 		@Override
 		public void run() {
-			if (flagStop == 1) {
+			if (!canMove) {//如果为不可拖动
 				return;
 			}
 			if (rollingTurn == 0) {// 向左弹回
@@ -191,9 +191,9 @@ public class MyView extends View {
 			} else if (rollingTurn == 1) {// 向右弹回
 				toRight();
 			} else if (rollingTurn == 3) {// fling中用的
-				while (true) {
+				while (canMove) {
 					if (Math.abs(vx) > 10) {
-						vx *= (float) 0.95;
+						vx *= (float) 0.97;
 						chartRect.setLeft(chartRect.getLeft() + vx);
 						// chartRect.setLeft(chartRect.getLeft());
 						chartRect.setRight(chartRect.getLeft()
@@ -225,10 +225,7 @@ public class MyView extends View {
 		 * 向右弹回
 		 */
 		private void toRight() {
-			while (true) {
-				if (flagStop == 1) {
-					break;
-				}
+			while (canMove) {
 				dx = rightSpringLocation
 						- (chartRect.getLeft() + chartRect.getWidth());
 				ax = dx * (float) sping;
@@ -258,10 +255,7 @@ public class MyView extends View {
 		 * 向左弹回
 		 */
 		private void toLeft() {
-			while (true) {
-				if (flagStop == 1) {
-					break;
-				}
+			while (canMove) {
 				// 左弹簧固定点左侧到可拖动控件的左侧的距离
 				dx = leftSpringLocation - chartRect.getLeft();
 				ax = dx * (float) sping; // 加速度等于距离乘以sping的值

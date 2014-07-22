@@ -22,14 +22,14 @@ public class MyActivity extends Activity {
 		Btn1.setOnClickListener(new Button.OnClickListener() {// 创建监听
 			public void onClick(View v) {
 				// 设置不可滚动
-				mv.flagStop = 1;
+				mv.canMove = false;
 			}
 		});
 		Button Btn2 = (Button) findViewById(R.id.buttonStart);// 获取按钮资源
 		Btn2.setOnClickListener(new Button.OnClickListener() {// 创建监听
 			public void onClick(View v) {
-				// 设置不可滚动
-				mv.flagStop = 0;
+				// 设置允许滚动
+				mv.canMove = true;
 			}
 		});
 	}
